@@ -1,0 +1,39 @@
+#header {
+  .navbar {
+    .navbar-menu {
+      .navbar-left {
+        display: flex;
+        float: left;
+        margin-left: 60px;
+        span {
+          margin: 40px;
+        }
+        .navbar-context {
+          color: #e50914;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 1.8em;
+          margin-right: 5px;
+          text-decoration: none;
+          vertical-align: middle;
+        }
+        .navbar-title {
+          color: #e5e5e5;
+          cursor: pointer;
+          display: inline-block;
+          font-size: 1.8em;
+          margin-right: 5px;
+          text-decoration: none;
+          vertical-align: middle;
+        }
+      }
+      .navbar-right {
+        float: right;
+        margin: 40px;
+        .navbar-user {
+          color: #e5e5e5;
+        }
+      }
+    }
+  }
+}
