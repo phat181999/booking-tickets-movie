@@ -37,6 +37,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
       },
       email: {
         type: DataTypes.STRING,
@@ -53,5 +54,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
       modelName: "User",
     }
   );
+
   return User;
 };
