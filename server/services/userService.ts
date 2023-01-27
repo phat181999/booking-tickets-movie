@@ -1,5 +1,3 @@
-import { Sequelize } from "sequelize-typescript";
-
 const { User } = require("../models");
 const { STATUSCODES, APIError: error } = require("../utils/app-errors");
 const {
@@ -8,8 +6,8 @@ const {
 } = require("../utils/validate-error");
 
 class UserService {
-  async createuser(queryUser: any) {
-    const { username, email, password } = queryUser;
+  async createUserService(userInputs: any) {
+    const { username, email, password } = userInputs;
     if (!username || !email || !password) {
       return new error("Require more information", STATUSCODES.BAD_REQUEST);
     }
@@ -33,4 +31,14 @@ class UserService {
       return error;
     }
   }
+
+  async getUser() {
+    try {
+      const query = await User.sequelize.query("SELECT * FROM User");
+      return query;
+    } catch (error) {
+      return error;
+    }
+  }
 }
+export default UserService;

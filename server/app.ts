@@ -1,5 +1,4 @@
 import express from "express";
-import * as db from "./models";
 import bodyParser from "body-parser";
 
 class App {
@@ -13,6 +12,7 @@ class App {
 
   constructor() {
     this.app = express();
+
     this.config();
   }
 }
