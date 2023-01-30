@@ -1,3 +1,4 @@
+import db from "../models";
 const { User } = require("../models");
 const { STATUSCODES, APIError: error } = require("../utils/app-errors");
 const {
@@ -22,7 +23,7 @@ class UserService {
     }
 
     try {
-      const query = await User.sequelize.query(
+      const query = await db.User.sequelize.query(
         "INSERT INTO User (username, email, password) VALUES ($1, $2, $3) RETURNING",
         [username, email, password]
       );
@@ -34,11 +35,11 @@ class UserService {
 
   async getUser() {
     try {
-      const query = await User.sequelize.query("SELECT * FROM User");
+      const [query] = await db.User.sequelize.query(`SELECT * FROM "Users"`);
       return query;
     } catch (error) {
       return error;
     }
   }
 }
-export default UserService;
+module.exports = UserService;

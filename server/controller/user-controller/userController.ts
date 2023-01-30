@@ -1,5 +1,5 @@
-const express = require("express");
-const http = require("http");
+import express, { Response, Request, NextFunction } from "express";
+
 const userService = require("../../services/userService");
 
 export interface UserInterface {
@@ -7,8 +7,9 @@ export interface UserInterface {
   email: any;
   password: any;
 }
+const services = new userService();
 
-const signIn = async (res: Response, req: UserInterface) => {
+export const signIn = async (res: Response, req: UserInterface) => {
   try {
     const { username, email, password } = req;
     const data = await userService.createUserService({
@@ -23,14 +24,18 @@ const signIn = async (res: Response, req: UserInterface) => {
   }
 };
 
-const getAllUser = async (res: Response, req: UserInterface) => {
+export const getAllUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const data = await userService.getUser();
-    // const httpResponse = http.get(data);
-    // return res.json(httpResponse);
-    console.log(data);
+    const data = await services.getUser();
+    res.status(200).json({ message: "Success", data: data });
   } catch (error) {
     console.log(error);
+    res.json({ message: "Internal Error" });
+    return next();
   }
 };
 
