@@ -32,7 +32,6 @@ class APIError extends AppError {
     super(name, statusCode, description);
   }
 }
-
 module.exports = {
   STATUS_CODES,
   AppError,

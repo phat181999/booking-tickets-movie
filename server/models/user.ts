@@ -2,10 +2,9 @@
 import { Model, UUIDV4 } from "sequelize";
 
 interface UserAttributes {
-  id: string;
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  password: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -15,10 +14,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    id!: string;
-    username!: string;
+
+    firstName!: string;
+    lastName!: string;
     email!: string;
-    password!: string;
     static associate(models: any) {
       // define association here
       // User.hasOne(models.Ticket, {
@@ -28,30 +27,25 @@ module.exports = (sequelize: any, DataTypes: any) => {
   }
   User.init(
     {
-      id: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        primaryKey: true,
-        defaultValue: UUIDV4,
-      },
-      username: {
+      firstName: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
       },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+      },
+
       email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: "Users",
     }
   );
 

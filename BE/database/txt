@@ -1,0 +1,4 @@
+psql -U postgres
+\l //list 
+\c + (table) cd table
+\q quit
