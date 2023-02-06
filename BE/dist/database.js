@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg_1 = require("pg");
+require("dotenv").config();
 const client = new pg_1.Pool({
-    user: "postgres",
+    user: process.env.DB_USERNAME,
     host: "localhost",
-    password: "tanphat99",
-    database: "movie",
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
     port: 5432,
 });
 exports.default = client;
