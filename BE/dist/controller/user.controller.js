@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logIn = exports.createUser = exports.updateUser = exports.deteleUser = exports.getUserId = exports.getUers = void 0;
-const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const UserService = require("../services/user.service");
 const Middlewares = require("../middlwares");
 const services = new UserService();

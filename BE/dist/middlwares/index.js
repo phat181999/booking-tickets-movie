@@ -64,5 +64,17 @@ class Middlewares {
             }
         });
     }
+    checkIdTicket(IdInput) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = IdInput;
+            const checkId = yield database_1.default.query("SELECT * FROM tickets WHERE id = $1", [id]);
+            if (checkId.rowCount != 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+    }
 }
 module.exports = Middlewares;

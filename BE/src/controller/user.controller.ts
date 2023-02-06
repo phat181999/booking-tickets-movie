@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import { QueryResult } from "pg";
-const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const UserService = require("../services/user.service");
 const Middlewares = require("../middlwares");
 const services = new UserService();

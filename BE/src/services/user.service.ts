@@ -67,7 +67,6 @@ class UserService {
 
   async updateUserService(userInput: any) {
     const { id, name, email } = userInput;
-    console.log(id);
     try {
       const response: QueryResult = await client.query(
         "UPDATE users SET name = $1 , email = $2 WHERE id = $3",

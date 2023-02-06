@@ -76,7 +76,6 @@ class UserService {
     updateUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id, name, email } = userInput;
-            console.log(id);
             try {
                 const response = yield database_1.default.query("UPDATE users SET name = $1 , email = $2 WHERE id = $3", [name, email, id]);
                 return response;

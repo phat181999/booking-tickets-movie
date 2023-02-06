@@ -46,5 +46,19 @@ class Middlewares {
       return false;
     }
   }
+
+  async checkIdTicket(IdInput: any) {
+    const { id } = IdInput;
+    const checkId: QueryResult = await client.query(
+      "SELECT * FROM tickets WHERE id = $1",
+      [id]
+    );
+
+    if (checkId.rowCount != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 module.exports = Middlewares;

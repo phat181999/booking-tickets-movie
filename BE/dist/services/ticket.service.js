@@ -13,64 +13,129 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
+const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
+const Middlewares = require("../middlwares");
+const middlwares = new Middlewares();
 class TicketService {
     createTicketService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, email } = userInput;
-                const response = yield database_1.default.query("INSERT INTO users (name, email) VALUES ($1, $2)", [name, email]);
-                return response;
+                const { userName, showTime, totalPrice, seat } = userInput;
+                var timer = new Date().toJSON();
+                const response = yield database_1.default.query("INSERT INTO tickets (userName, showTime, totalPrice, seat) VALUES ($1, $2, $3, $4) RETURNING *", [userName, showTime, totalPrice, seat]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Create successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
-    getTicketUsersService() {
+    getTicketsService() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.default.query("SELECT * FROM users  ORDER BY id ASC");
-                return response;
+                const response = yield database_1.default.query("SELECT * FROM tickets  ORDER BY id ASC");
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Get Tickets successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
-    getTicketUserService(userInput) {
+    getTicketIdService(ticketInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id } = userInput;
+            const { id } = ticketInput;
             try {
-                const response = yield database_1.default.query("SELECT * FROM users WHERE id = $1", [id]);
-                return response;
+                const response = yield database_1.default.query("SELECT * FROM tickets WHERE id = $1", [id]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Get Ticket successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
+    // async getTicketUserService(userInput: any) {
+    //   const { id } = userInput;
+    //   try {
+    //     const response: QueryResult = await client.query(
+    //       "SELECT * FROM users WHERE id = $1",
+    //       [id]
+    //     );
+    //     return response;
+    //   } catch (error) {
+    //     return error;
+    //   }
+    // }
     deleteTicketUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;
             try {
-                const response = yield database_1.default.query("DELETE FROM users WHERE id = $1", [id]);
-                return response;
+                const response = yield database_1.default.query("DELETE FROM tickets WHERE id = $1", [id]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Delete Ticket successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
     updateTicketUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, name, email } = userInput;
-            console.log(id);
+            const { id, userName, showTime, totalPrice, seat } = userInput;
             try {
-                const response = yield database_1.default.query("UPDATE users SET name = $1 , email = $2 WHERE id = $3", [name, email, id]);
-                return response;
+                const response = yield database_1.default.query("UPDATE tickets SET userName = $1 , showTime = $2, totalPrice = $3, seat = $4 WHERE id = $5", [userName, showTime, totalPrice, seat, id]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Update Ticket successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
