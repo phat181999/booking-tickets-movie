@@ -4,7 +4,7 @@ import { Model, UUIDV4 } from "sequelize";
 interface TicketsAttributes {
   id: string;
   type: string;
-  theater: number;
+  theater: string;
   movieName: string;
 }
 
@@ -16,9 +16,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
      * The `models/index` file will call this method automatically.
      */
     id!: string;
-    username!: string;
-    email!: string;
-    password!: string;
+    type!: string;
+    theater!: string;
+    movieName!: string;
     static associate(models: any) {
       // define association here
       // Ticket.belongsTo(models.User, {
@@ -35,7 +35,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         defaultValue: UUIDV4,
       },
       type: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       theater: {
