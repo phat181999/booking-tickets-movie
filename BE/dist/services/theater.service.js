@@ -17,8 +17,8 @@ class TheaterService {
     createTheaterService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, email } = userInput;
-                const response = yield database_1.default.query("INSERT INTO users (name, email) VALUES ($1, $2)", [name, email]);
+                const { nameTheater, seat } = userInput;
+                const response = yield database_1.default.query("INSERT INTO theaters (nameTheater, seat) VALUES ($1, $2)", [nameTheater, seat]);
                 return response;
             }
             catch (error) {
@@ -29,7 +29,7 @@ class TheaterService {
     getTheaterUsersService() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.default.query("SELECT * FROM users  ORDER BY id ASC");
+                const response = yield database_1.default.query("SELECT * FROM theaters  ORDER BY id ASC");
                 return response;
             }
             catch (error) {
@@ -41,7 +41,7 @@ class TheaterService {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;
             try {
-                const response = yield database_1.default.query("SELECT * FROM users WHERE id = $1", [id]);
+                const response = yield database_1.default.query("SELECT * FROM theaters WHERE id = $1", [id]);
                 return response;
             }
             catch (error) {
@@ -53,7 +53,7 @@ class TheaterService {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;
             try {
-                const response = yield database_1.default.query("DELETE FROM users WHERE id = $1", [id]);
+                const response = yield database_1.default.query("DELETE FROM theaters WHERE id = $1", [id]);
                 return response;
             }
             catch (error) {
@@ -63,10 +63,10 @@ class TheaterService {
     }
     updateTheaterUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, name, email } = userInput;
+            const { id, nameTheater, seat } = userInput;
             console.log(id);
             try {
-                const response = yield database_1.default.query("UPDATE users SET name = $1 , email = $2 WHERE id = $3", [name, email, id]);
+                const response = yield database_1.default.query("UPDATE theaters SET nameTheater = $1 , seat = $2 WHERE id = $3", [nameTheater, seat, id]);
                 return response;
             }
             catch (error) {

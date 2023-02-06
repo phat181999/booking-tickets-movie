@@ -14,20 +14,20 @@ CREATE TABLE movies(
     director VARCHAR(100),
     description VARCHAR(800),
     type VARCHAR(100),
-    trailer VARCHAR(500)
+    trailer VARCHAR(500),
+    avatar VARCHAR(200)
 );
+
+DROP TABLE IF EXISTS movies;
 
 CREATE TABLE reviews(
     id SERIAL PRIMARY KEY,
     description VARCHAR(800),
-    rating VARCHAR(100)
+    rating VARCHAR(100),
+    userName VARCHAR(100)
 );
 
-CREATE TABLE reviews(
-    id SERIAL PRIMARY KEY,
-    description VARCHAR(800),
-    rating VARCHAR(100)
-);
+DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE seats(
     id SERIAL PRIMARY KEY,

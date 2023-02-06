@@ -4,10 +4,10 @@ import { QueryResult } from "pg";
 class TheaterService {
   async createTheaterService(userInput: any) {
     try {
-      const { name, email } = userInput;
+      const { nameTheater, seat } = userInput;
       const response: QueryResult = await client.query(
-        "INSERT INTO users (name, email) VALUES ($1, $2)",
-        [name, email]
+        "INSERT INTO theaters (nameTheater, seat) VALUES ($1, $2)",
+        [nameTheater, seat]
       );
       return response;
     } catch (error) {
@@ -17,7 +17,7 @@ class TheaterService {
   async getTheaterUsersService() {
     try {
       const response: QueryResult = await client.query(
-        "SELECT * FROM users  ORDER BY id ASC"
+        "SELECT * FROM theaters  ORDER BY id ASC"
       );
       return response;
     } catch (error) {
@@ -29,7 +29,7 @@ class TheaterService {
     const { id } = userInput;
     try {
       const response: QueryResult = await client.query(
-        "SELECT * FROM users WHERE id = $1",
+        "SELECT * FROM theaters WHERE id = $1",
         [id]
       );
       return response;
@@ -42,7 +42,7 @@ class TheaterService {
     const { id } = userInput;
     try {
       const response: QueryResult = await client.query(
-        "DELETE FROM users WHERE id = $1",
+        "DELETE FROM theaters WHERE id = $1",
         [id]
       );
       return response;
@@ -52,12 +52,12 @@ class TheaterService {
   }
 
   async updateTheaterUserService(userInput: any) {
-    const { id, name, email } = userInput;
+    const { id, nameTheater, seat } = userInput;
     console.log(id);
     try {
       const response: QueryResult = await client.query(
-        "UPDATE users SET name = $1 , email = $2 WHERE id = $3",
-        [name, email, id]
+        "UPDATE theaters SET nameTheater = $1 , seat = $2 WHERE id = $3",
+        [nameTheater, seat, id]
       );
       return response;
     } catch (error) {
