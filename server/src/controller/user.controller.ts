@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { QueryResult } from "pg";
+
 const UserService = require("../services/user.service");
 const Middlewares = require("../middlwares");
 const services = new UserService();
@@ -12,9 +13,10 @@ export const getUers = async (
 ): Promise<Response> => {
   try {
     const data = await services.getUsersService();
-    return res.status(200).json({ message: "Success", data: data.rows });
+    return res.json({ data });
   } catch (error) {
     console.log(error, "error");
+    next(error);
     return res.status(401).json({ message: "Error Internal Server" });
   }
 };
@@ -90,7 +92,8 @@ export const createUser = async (
     return res.json(data);
   } catch (error) {
     console.log(error, "error");
-    return res.status(401).json({ message: "Error Internal Server" });
+    next();
+    return res.status(500).json({ message: "Error Internal Server" });
   }
 };
 

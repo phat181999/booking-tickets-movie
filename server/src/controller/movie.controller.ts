@@ -12,8 +12,17 @@ export const createMovie = async (
   res: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { title, director, description, type, trailer, avatar } = req.body;
-  if (!title || !director || !description || !type || !trailer || !avatar) {
+  const { title, director, description, type, trailer, avatar, timeCount } =
+    req.body;
+  if (
+    !title ||
+    !director ||
+    !description ||
+    !type ||
+    !trailer ||
+    !avatar ||
+    !timeCount
+  ) {
     return res.status(400).json({ message: "Not Empty Record!" });
   }
   try {
@@ -28,6 +37,7 @@ export const createMovie = async (
       type,
       trailer,
       avatar,
+      timeCount,
     });
 
     return res.json(data);

@@ -14,18 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
-const Middlewares = require("../middlwares");
-const middlwares = new Middlewares();
-class ReviewService {
-    createReviewService(userInput) {
+class BookingTheaterService {
+    bookingTheaterService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { description, rating, userName_id, reviewMovie_id } = userInput;
-                const response = yield database_1.default.query("INSERT INTO reviews (description, rating, userName_id, reviewMovie_id ) VALUES ($1, $2, $3, $4) RETURNING *", [description, rating, userName_id, reviewMovie_id]);
+                const response = yield database_1.default.query("INSERT INTO bookingtheater (movie_id, theater_id, createAt, deleteAt, status ) VALUES ($1, $2, $3, $4, $5) RETURNING *", [
+                    userInput.movie_id,
+                    userInput.theater_id,
+                    userInput.createAt,
+                    userInput.deleteAt,
+                    userInput.status,
+                ]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
-                    message: `Create Reviews Successfully!`,
+                    message: `Booking Theater Successfully!`,
                     data: response.rows,
                 };
             }
@@ -39,75 +42,16 @@ class ReviewService {
             }
         });
     }
-    getReviewsService() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const response = yield database_1.default.query("SELECT * FROM reviews  ORDER BY id ASC");
-                return {
-                    status: STATUS_CODES.OK,
-                    success: true,
-                    message: `Get Reviews successfully!`,
-                    data: response.rows,
-                };
-            }
-            catch (error) {
-                return {
-                    status: STATUS_CODES.BadRequestError,
-                    success: false,
-                    message: `Internal Server Error!`,
-                    error: error,
-                };
-            }
-        });
-    }
-    getReviewIdService(ticketInput) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = ticketInput;
-            try {
-                const response = yield database_1.default.query("SELECT * FROM reviews WHERE review_id = $1 ", [id]);
-                return {
-                    status: STATUS_CODES.OK,
-                    success: true,
-                    message: `Get Reviews successfully!`,
-                    data: response.rows,
-                };
-            }
-            catch (error) {
-                return {
-                    status: STATUS_CODES.BadRequestError,
-                    success: false,
-                    message: `Internal Server Error!`,
-                    error: error,
-                };
-            }
-        });
-    }
-    getReviewMovieService(userInput) {
+    getBookingTheaterService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;
             try {
-                const response = yield database_1.default.query("SELECT * FROM reviews JOIN movies ON reviews.review_id = movies.movies_id WHERE reviews.review_id = $1", [id]);
+                const response = yield database_1.default.query("SELECT * FROM bookingtheater INNER JOIN movies ON  movies.movies_id = bookingtheater.movie_id INNER JOIN theaters ON  theaters.theater_id = bookingtheater.theater_id WHERE bookingtheater.bookingtheater_id = $1", [id]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
-                    message: `Delete Movie Id ${id} successfully!`,
+                    message: `Get Booking Theater successfully!`,
                     data: response.rows,
-                };
-            }
-            catch (error) {
-                return error;
-            }
-        });
-    }
-    deleteReviewUserService(userInput) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = userInput;
-            try {
-                const response = yield database_1.default.query("DELETE FROM reviews WHERE id = $1", [id]);
-                return {
-                    status: STATUS_CODES.OK,
-                    success: true,
-                    message: `Delete Movie Id ${id} successfully!`,
                 };
             }
             catch (error) {
@@ -120,15 +64,43 @@ class ReviewService {
             }
         });
     }
-    updateReviewUserService(userInput) {
+    deleteBookingTheaterService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { id, description, rating, userName } = userInput;
+            const { id } = userInput;
             try {
-                const response = yield database_1.default.query("UPDATE reviews SET description = $1 , rating = $2  WHERE id = $3", [description, rating, id]);
+                const response = yield database_1.default.query("DELETE FROM bookingtheater WHERE bookingtheater_id = $1", [id]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
-                    message: `Update Review Id ${id} successfully!`,
+                    message: `Delete bookingtheater Id ${id} successfully!`,
+                };
+            }
+            catch (error) {
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
+            }
+        });
+    }
+    updateMovieUserService(userInput) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const response = yield database_1.default.query("UPDATE bookingtheater SET theater_id = $1 , movie_id = $2, createAt = $3, deleteAt = $4, status = $5, avatar = $6 WHERE bookingtheater_id = $7", [
+                    userInput.theater_id,
+                    userInput.movie_id,
+                    userInput.createAt,
+                    userInput.deleteAt,
+                    userInput.status,
+                    userInput.bookingtheater_id,
+                ]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Update Movie Id ${userInput.bookingtheater_id} successfully!`,
+                    data: response.rows,
                 };
             }
             catch (error) {
@@ -142,4 +114,4 @@ class ReviewService {
         });
     }
 }
-module.exports = ReviewService;
+module.exports = BookingTheaterService;

@@ -17,10 +17,11 @@ const middlwares = new Middlewares();
 const getUers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield services.getUsersService();
-        return res.status(200).json({ message: "Success", data: data.rows });
+        return res.json({ data });
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(401).json({ message: "Error Internal Server" });
     }
 });
@@ -84,7 +85,8 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     catch (error) {
         console.log(error, "error");
-        return res.status(401).json({ message: "Error Internal Server" });
+        next();
+        return res.status(500).json({ message: "Error Internal Server" });
     }
 });
 exports.createUser = createUser;

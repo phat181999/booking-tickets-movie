@@ -30,10 +30,13 @@ class UserService {
 
   async getUsersService() {
     try {
-      const response: QueryResult = await client.query(
-        "SELECT * FROM users  ORDER BY id ASC"
-      );
-      return response;
+      const response: QueryResult = await client.query("SELECT * FROM users");
+      return {
+        status: STATUS_CODES.OK,
+        success: true,
+        message: `Create Reviews Successfully!`,
+        data: response.rows,
+      };
     } catch (error) {
       return error;
     }
@@ -91,7 +94,12 @@ class UserService {
       if (!checkPassword) {
         return new APIError("Password was wrong!", STATUS_CODES.BAD_REQUEST);
       }
-      const token = await middlwares.createToken({ email });
+      const queryUser: QueryResult = await client.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+      const user_id = queryUser.rows[0].user_id;
+      const token = await middlwares.createToken({ user_id });
       return {
         status: STATUS_CODES.OK,
         success: true,

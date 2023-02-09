@@ -46,8 +46,8 @@ class Middlewares {
     }
     createToken(emailInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { email } = emailInput;
-            const token = jwt.sign({ email }, process.env.SECRET_KEY);
+            const { user_id } = emailInput;
+            const token = jwt.sign({ user_id }, process.env.SECRET_KEY);
             return token;
         });
     }

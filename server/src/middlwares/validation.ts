@@ -1,5 +1,6 @@
 import client from "../database";
 import { QueryResult } from "pg";
+import { TimeCountMovie } from "../entity";
 class Validations {
   async checkMovieExists(titleInput: any) {
     const { title } = titleInput;
@@ -26,6 +27,13 @@ class Validations {
     } else {
       return false;
     }
+  }
+
+  async checkTheater(timer: TimeCountMovie) {
+    const query: QueryResult = await client.query(
+      "SELECT * FROM movies WHERE movies_id = $1",
+      [timer.id]
+    );
   }
 }
 

@@ -1,10 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 import { QueryResult } from "pg";
 import client from "../database";
-const ReviewService = require("../services/review.service");
+const ShowTimeService = require("../services/showtime.service");
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Validations = require("../middlwares/validation");
-const services = new ReviewService();
+const services = new ShowTimeService();
 const validations = new Validations();
 
 export const createShowTime = async (
@@ -12,33 +12,34 @@ export const createShowTime = async (
   res: Response,
   next: NextFunction
 ): Promise<Response> => {
-  const { description, rating } = req.body;
-  if (!description || !rating) {
+  const { time } = req.body;
+  if (!time) {
     return res.status(400).json({ message: "Not Empty Record!" });
   }
+
   try {
     const data = await services.createReviewService({
-      description,
-      rating,
+      time,
     });
-
     return res.json(data);
   } catch (error) {
     console.log(error, "error");
+    next(error);
     return res.status(500).json({ message: "Error Internal Server" });
   }
 };
 
-export const getReviews = async (
+export const getShowtime = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<Response> => {
   try {
-    const data = await services.getReviewsService();
+    const data = await services.getShowTimeService();
     return res.json(data);
   } catch (error) {
     console.log(error, "error");
+    next(error);
     return res.status(500).json({ message: "Error Internal Server" });
   }
 };

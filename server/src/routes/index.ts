@@ -5,11 +5,16 @@ const { TicketRouter } = require("./tickets.routes");
 const { MovieRouter } = require("./movies.routes");
 const { ReviewsRouter } = require("./reviews.routes");
 const { SeatsRouter } = require("./seats.routes");
+const { TheatersRouter } = require("./theaters.routes");
+const { ShowTimesRouter } = require("./showTimes.routes");
+const { BookingTheaterRouter } = require("./bookingTheater.routes");
 
 router.use("/user", UserRouter);
 router.use("/ticket", TicketRouter);
 router.use("/movie", MovieRouter);
 router.use("/review", ReviewsRouter);
 router.use("/seats", SeatsRouter);
-
+router.use("/theaters", TheatersRouter);
+router.use("/showtimes", ShowTimesRouter);
+router.use("/booking-theater", BookingTheaterRouter);
 export default router;

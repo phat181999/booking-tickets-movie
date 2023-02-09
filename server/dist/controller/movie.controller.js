@@ -20,8 +20,14 @@ const Validations = require("../middlwares/validation");
 const services = new MovieService();
 const validations = new Validations();
 const createMovie = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, director, description, type, trailer, avatar } = req.body;
-    if (!title || !director || !description || !type || !trailer || !avatar) {
+    const { title, director, description, type, trailer, avatar, timeCount } = req.body;
+    if (!title ||
+        !director ||
+        !description ||
+        !type ||
+        !trailer ||
+        !avatar ||
+        !timeCount) {
         return res.status(400).json({ message: "Not Empty Record!" });
     }
     try {
@@ -36,6 +42,7 @@ const createMovie = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             type,
             trailer,
             avatar,
+            timeCount,
         });
         return res.json(data);
     }
