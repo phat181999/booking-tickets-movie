@@ -12,42 +12,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateReview = exports.deleteReview = exports.getReviewId = exports.getReviews = exports.createShowTime = void 0;
+exports.updateReview = exports.deleteReview = exports.getReviewId = exports.getShowtime = exports.createShowTime = void 0;
 const database_1 = __importDefault(require("../database"));
-const ReviewService = require("../services/review.service");
+const ShowTimeService = require("../services/showtime.service");
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Validations = require("../middlwares/validation");
-const services = new ReviewService();
+const services = new ShowTimeService();
 const validations = new Validations();
 const createShowTime = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { description, rating } = req.body;
-    if (!description || !rating) {
+    const { time } = req.body;
+    if (!time) {
         return res.status(400).json({ message: "Not Empty Record!" });
     }
     try {
         const data = yield services.createReviewService({
-            description,
-            rating,
+            time,
         });
         return res.json(data);
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(500).json({ message: "Error Internal Server" });
     }
 });
 exports.createShowTime = createShowTime;
-const getReviews = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getShowtime = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield services.getReviewsService();
+        const data = yield services.getShowTimeService();
         return res.json(data);
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(500).json({ message: "Error Internal Server" });
     }
 });
-exports.getReviews = getReviews;
+exports.getShowtime = getShowtime;
 const getReviewId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {

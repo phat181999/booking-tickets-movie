@@ -39,5 +39,10 @@ class Validations {
             }
         });
     }
+    checkTheater(timer) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = yield database_1.default.query("SELECT * FROM movies WHERE movies_id = $1", [timer.id]);
+        });
+    }
 }
 module.exports = Validations;

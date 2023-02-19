@@ -2,15 +2,16 @@ import client from "../database";
 import { QueryResult } from "pg";
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Middlewares = require("../middlwares");
-const middlwares = new Middlewares();
+
 class MovieService {
   async createTicketService(userInput: any) {
     try {
-      const { title, director, description, type, trailer, avatar } = userInput;
+      const { title, director, description, type, trailer, avatar, timeCount } =
+        userInput;
 
       const response: QueryResult = await client.query(
-        "INSERT INTO movies (title, director, description, type, trailer, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-        [title, director, description, type, trailer, avatar]
+        "INSERT INTO movies (title, director, description, type, trailer, avatar, timeCount) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [title, director, description, type, trailer, [avatar], timeCount]
       );
       return {
         status: STATUS_CODES.OK,
@@ -27,11 +28,10 @@ class MovieService {
       };
     }
   }
+
   async getMoviesService() {
     try {
-      const response: QueryResult = await client.query(
-        "SELECT * FROM movies  ORDER BY id ASC"
-      );
+      const response: QueryResult = await client.query("SELECT * FROM movies");
       return {
         status: STATUS_CODES.OK,
         success: true,
@@ -71,19 +71,6 @@ class MovieService {
       };
     }
   }
-
-  // async getTicketUserService(userInput: any) {
-  //   const { id } = userInput;
-  //   try {
-  //     const response: QueryResult = await client.query(
-  //       "SELECT * FROM users WHERE id = $1",
-  //       [id]
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
 
   async deleteMovieUserService(userInput: any) {
     const { id } = userInput;

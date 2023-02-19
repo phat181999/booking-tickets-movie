@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logIn = exports.createUser = exports.updateUser = exports.deteleUser = exports.getUserId = exports.getUers = void 0;
+const cloudinary = require("cloudinary").v2;
 const UserService = require("../services/user.service");
 const Middlewares = require("../middlwares");
 const services = new UserService();
@@ -17,10 +18,11 @@ const middlwares = new Middlewares();
 const getUers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield services.getUsersService();
-        return res.status(200).json({ message: "Success", data: data.rows });
+        return res.json({ data });
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(401).json({ message: "Error Internal Server" });
     }
 });
@@ -68,23 +70,36 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateUser = updateUser;
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, avatar } = req.body;
     const checkEmail = yield middlwares.checkEmailExist({ email });
     if (checkEmail) {
         return res.status(400).json({ message: "Email Exist" });
     }
     try {
+        cloudinary.config({
+            cloud_name: "demo-project",
+            api_key: "815568646484313",
+            api_secret: "az33LMviYjQt8qUdxeoVseuPFK4",
+        });
+        const result = yield cloudinary.uploader.upload(req.file.path, {
+            public_id: "users",
+            with: 500,
+            height: 500,
+            crop: "fill",
+        });
         const data = yield services.createUserService({
             name,
             email,
             password,
             role,
+            avatar: result.url,
         });
-        return res.json(data);
+        return res.json({ data });
     }
     catch (error) {
         console.log(error, "error");
-        return res.status(401).json({ message: "Error Internal Server" });
+        next();
+        return res.status(500).json({ message: "Error Internal Server" });
     }
 });
 exports.createUser = createUser;

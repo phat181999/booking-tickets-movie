@@ -15,13 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = __importDefault(require("../database"));
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Middlewares = require("../middlwares");
-const middlwares = new Middlewares();
 class MovieService {
     createTicketService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { title, director, description, type, trailer, avatar } = userInput;
-                const response = yield database_1.default.query("INSERT INTO movies (title, director, description, type, trailer, avatar) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [title, director, description, type, trailer, avatar]);
+                const { title, director, description, type, trailer, avatar, timeCount } = userInput;
+                const response = yield database_1.default.query("INSERT INTO movies (title, director, description, type, trailer, avatar, timeCount) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [title, director, description, type, trailer, [avatar], timeCount]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -42,7 +41,7 @@ class MovieService {
     getMoviesService() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.default.query("SELECT * FROM movies  ORDER BY id ASC");
+                const response = yield database_1.default.query("SELECT * FROM movies");
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -82,18 +81,6 @@ class MovieService {
             }
         });
     }
-    // async getTicketUserService(userInput: any) {
-    //   const { id } = userInput;
-    //   try {
-    //     const response: QueryResult = await client.query(
-    //       "SELECT * FROM users WHERE id = $1",
-    //       [id]
-    //     );
-    //     return response;
-    //   } catch (error) {
-    //     return error;
-    //   }
-    // }
     deleteMovieUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;

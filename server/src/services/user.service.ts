@@ -7,14 +7,14 @@ const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const middlwares = new Middlewares();
 class UserService {
   async createUserService(userInput: any) {
-    const { name, email, password, role } = userInput;
+    const { name, email, password, role, avatar } = userInput;
 
     try {
       const salt = bcrypt.genSaltSync(10);
-      const hashPassword = bcrypt.hashSync(password, salt);
+      const hashPassword = await bcrypt.hashSync(password, salt);
       const response: QueryResult = await client.query(
-        "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
-        [name, email, hashPassword, role]
+        "INSERT INTO users (name, email, password, role, avatar) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+        [name, email, hashPassword, role, avatar]
       );
 
       return {
@@ -24,16 +24,24 @@ class UserService {
         data: response.rows,
       };
     } catch (error) {
-      return error;
+      return {
+        status: STATUS_CODES.BadRequestError,
+        success: false,
+        message: `Internal Server Error!`,
+        error: error,
+      };
     }
   }
 
   async getUsersService() {
     try {
-      const response: QueryResult = await client.query(
-        "SELECT * FROM users  ORDER BY id ASC"
-      );
-      return response;
+      const response: QueryResult = await client.query("SELECT * FROM users");
+      return {
+        status: STATUS_CODES.OK,
+        success: true,
+        message: `Create Reviews Successfully!`,
+        data: response.rows,
+      };
     } catch (error) {
       return error;
     }
@@ -91,7 +99,12 @@ class UserService {
       if (!checkPassword) {
         return new APIError("Password was wrong!", STATUS_CODES.BAD_REQUEST);
       }
-      const token = await middlwares.createToken({ email });
+      const queryUser: QueryResult = await client.query(
+        "SELECT * FROM users WHERE email = $1",
+        [email]
+      );
+      const user_id = queryUser.rows[0].user_id;
+      const token = await middlwares.createToken({ user_id });
       return {
         status: STATUS_CODES.OK,
         success: true,

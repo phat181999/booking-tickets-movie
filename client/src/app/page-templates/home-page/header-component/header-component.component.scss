@@ -1,38 +1,59 @@
 #header {
+  background-color: rgb(20, 20, 20);
   .navbar {
-    .navbar-menu {
-      .navbar-left {
+    .navbar-left {
+      .navba-item {
         display: flex;
-        float: left;
-        margin-left: 60px;
-        span {
-          margin: 40px;
-        }
-        .navbar-context {
+        margin: 30px 70px;
+        .navbar-title {
+          text-transform: uppercase;
           color: #e50914;
           cursor: pointer;
-          display: inline-block;
-          font-size: 1.8em;
-          margin-right: 5px;
-          text-decoration: none;
-          vertical-align: middle;
+          font-size: 45px;
+          font-family: inherit;
         }
-        .navbar-title {
-          color: #e5e5e5;
-          cursor: pointer;
-          display: inline-block;
-          font-size: 1.8em;
-          margin-right: 5px;
-          text-decoration: none;
-          vertical-align: middle;
+        ul {
+          list-style: none;
+          li {
+            display: inline-block;
+            margin: 20px 20px;
+            a {
+              text-decoration: none;
+              text-transform: uppercase;
+              color: #e5e5e5;
+            }
+          }
         }
       }
-      .navbar-right {
-        float: right;
-        margin: 40px;
-        .navbar-user {
+    }
+    .navbar-right {
+      display: flex;
+      justify-content: center;
+      padding: 47px 60px;
+      margin-right: 0px;
+      .right-element {
+        margin-top: 3px;
+      }
+      .right-avatar {
+        margin-left: 10px;
+        span {
           color: #e5e5e5;
         }
+        img {
+          width: 90px;
+          height: 34px;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+@media (min-width: 768) {
+  #header {
+    .navbar {
+      .navbar-right {
+        float: right !important;
+        margin-right: 0px;
       }
     }
   }

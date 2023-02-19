@@ -6,11 +6,10 @@ const middlwares = new Middlewares();
 class ReviewService {
   async createReviewService(userInput: any) {
     try {
-      const { description, rating } = userInput;
-
+      const { description, rating, userName_id, reviewMovie_id } = userInput;
       const response: QueryResult = await client.query(
-        "INSERT INTO reviews (description, rating ) VALUES ($1, $2) RETURNING *",
-        [description, rating]
+        "INSERT INTO reviews (description, rating, userName_id, reviewMovie_id ) VALUES ($1, $2, $3, $4) RETURNING *",
+        [description, rating, userName_id, reviewMovie_id]
       );
       return {
         status: STATUS_CODES.OK,
@@ -52,7 +51,7 @@ class ReviewService {
     const { id } = ticketInput;
     try {
       const response: QueryResult = await client.query(
-        "SELECT * FROM reviews WHERE id = $1 ",
+        "SELECT * FROM reviews WHERE review_id = $1 ",
         [id]
       );
 
@@ -72,18 +71,23 @@ class ReviewService {
     }
   }
 
-  // async getTicketUserService(userInput: any) {
-  //   const { id } = userInput;
-  //   try {
-  //     const response: QueryResult = await client.query(
-  //       "SELECT * FROM users WHERE id = $1",
-  //       [id]
-  //     );
-  //     return response;
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // }
+  async getReviewMovieService(userInput: any) {
+    const { id } = userInput;
+    try {
+      const response: QueryResult = await client.query(
+        "SELECT * FROM reviews JOIN movies ON reviews.review_id = movies.movies_id WHERE reviews.review_id = $1",
+        [id]
+      );
+      return {
+        status: STATUS_CODES.OK,
+        success: true,
+        message: `Delete Movie Id ${id} successfully!`,
+        data: response.rows,
+      };
+    } catch (error) {
+      return error;
+    }
+  }
 
   async deleteReviewUserService(userInput: any) {
     const { id } = userInput;

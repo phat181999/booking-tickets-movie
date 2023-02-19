@@ -6,12 +6,15 @@ import {
   getReviewId,
   deleteReview,
   updateReview,
+  getReviewMovie,
 } from "../controller/review.controller";
-ReviewsRouter.post("/create-review", createReview);
+import { Authentication } from "../middlwares/authentication";
+ReviewsRouter.post("/create-review", Authentication, createReview);
 ReviewsRouter.get("/get-reviews", getReviews);
 ReviewsRouter.get("/get-review/:id", getReviewId);
 ReviewsRouter.delete("/delete-review/:id", deleteReview);
 ReviewsRouter.put("/update-review/:id", updateReview);
+ReviewsRouter.get("/get-review-movie/:id", getReviewMovie);
 module.exports = {
   ReviewsRouter,
 };

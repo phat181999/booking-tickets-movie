@@ -1,10 +1,10 @@
 import { Response, Request, NextFunction } from "express";
 import { QueryResult } from "pg";
 import client from "../database";
-const ReviewService = require("../services/review.service");
+const SeatService = require("../services/seat.service");
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Validations = require("../middlwares/validation");
-const services = new ReviewService();
+const services = new SeatService();
 const validations = new Validations();
 
 export const createSeat = async (

@@ -14,10 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSeat = exports.deleteSeat = exports.getSeatId = exports.getSeats = exports.createSeat = void 0;
 const database_1 = __importDefault(require("../database"));
-const ReviewService = require("../services/review.service");
+const SeatService = require("../services/seat.service");
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Validations = require("../middlwares/validation");
-const services = new ReviewService();
+const services = new SeatService();
 const validations = new Validations();
 const createSeat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { row, seatNumber } = req.body;

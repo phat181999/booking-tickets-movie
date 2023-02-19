@@ -15,19 +15,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateMovie = exports.deleteMovie = exports.getMovieId = exports.getMovies = exports.createMovie = void 0;
 const database_1 = __importDefault(require("../database"));
 const MovieService = require("../services/movie.service");
-const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
 const Validations = require("../middlwares/validation");
+const path = require("path");
 const services = new MovieService();
 const validations = new Validations();
+const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
 const createMovie = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, director, description, type, trailer, avatar } = req.body;
-    if (!title || !director || !description || !type || !trailer || !avatar) {
-        return res.status(400).json({ message: "Not Empty Record!" });
-    }
+    const { title, director, description, type, trailer, avatar, timeCount } = req.body;
+    cloudinary.config({
+        cloud_name: "demo-project",
+        api_key: "815568646484313",
+        api_secret: "az33LMviYjQt8qUdxeoVseuPFK4",
+    });
     try {
         const checkMovieExitst = yield validations.checkMovieExists({ title });
         if (checkMovieExitst) {
             return res.status(400).json({ message: "Movie Exists!" });
+        }
+        var imageUrlList = [];
+        for (var i = 0; i < req.files.length; i++) {
+            const result = req.files[i].path;
+            const upload = yield cloudinary.uploader.upload(result, {
+                public_id: "movies",
+            });
+            imageUrlList.push(upload.url);
         }
         const data = yield services.createTicketService({
             title,
@@ -35,7 +47,8 @@ const createMovie = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             description,
             type,
             trailer,
-            avatar,
+            avatar: imageUrlList,
+            timeCount,
         });
         return res.json(data);
     }

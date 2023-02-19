@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateReview = exports.deleteReview = exports.getReviewId = exports.getReviews = exports.createReview = void 0;
+exports.updateReview = exports.deleteReview = exports.getReviewMovie = exports.getReviewId = exports.getReviews = exports.createReview = void 0;
 const database_1 = __importDefault(require("../database"));
 const ReviewService = require("../services/review.service");
 const { STATUS_CODES, APIError, BadRequestError } = require("../Utils");
@@ -20,19 +20,24 @@ const Validations = require("../middlwares/validation");
 const services = new ReviewService();
 const validations = new Validations();
 const createReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { description, rating } = req.body;
-    if (!description || !rating) {
-        return res.status(400).json({ message: "Not Empty Record!" });
+    const { description, rating, reviewMovie_id } = req.body;
+    const { data } = req;
+    const userID = data.user_id;
+    if (!description || !rating || !reviewMovie_id) {
+        return res.status(400).json({ message: "Not Empty Records!" });
     }
     try {
         const data = yield services.createReviewService({
             description,
             rating,
+            userName_id: userID,
+            reviewMovie_id,
         });
         return res.json(data);
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(500).json({ message: "Error Internal Server" });
     }
 });
@@ -44,6 +49,7 @@ const getReviews = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     catch (error) {
         console.log(error, "error");
+        next(error);
         return res.status(500).json({ message: "Error Internal Server" });
     }
 });
@@ -51,7 +57,7 @@ exports.getReviews = getReviews;
 const getReviewId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const checkExists = yield database_1.default.query(`SELECT * FROM  reviews WHERE id = $1`, [id]);
+        const checkExists = yield database_1.default.query(`SELECT * FROM  reviews WHERE review_id = $1`, [id]);
         if (checkExists.rowCount <= 0) {
             return res.status(400).json({ message: "Records not found" });
         }
@@ -64,6 +70,23 @@ const getReviewId = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getReviewId = getReviewId;
+const getReviewMovie = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const checkExists = yield database_1.default.query(`SELECT * FROM  reviews WHERE id = $1`, [id]);
+        if (checkExists.rowCount <= 0) {
+            return res.status(400).json({ message: "Records not found" });
+        }
+        const data = yield services.getTicketMovieService({ id });
+        return res.json(data);
+    }
+    catch (error) {
+        console.log(error, "error");
+        next(error);
+        return res.status(500).json({ message: "Error Internal Server" });
+    }
+});
+exports.getReviewMovie = getReviewMovie;
 const deleteReview = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {

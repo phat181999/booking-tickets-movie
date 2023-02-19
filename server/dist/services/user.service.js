@@ -21,11 +21,11 @@ const middlwares = new Middlewares();
 class UserService {
     createUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, email, password, role } = userInput;
+            const { name, email, password, role, avatar } = userInput;
             try {
                 const salt = bcrypt_1.default.genSaltSync(10);
-                const hashPassword = bcrypt_1.default.hashSync(password, salt);
-                const response = yield database_1.default.query("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *", [name, email, hashPassword, role]);
+                const hashPassword = yield bcrypt_1.default.hashSync(password, salt);
+                const response = yield database_1.default.query("INSERT INTO users (name, email, password, role, avatar) VALUES ($1, $2, $3, $4, $5) RETURNING *", [name, email, hashPassword, role, avatar]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -34,15 +34,25 @@ class UserService {
                 };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }
     getUsersService() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const response = yield database_1.default.query("SELECT * FROM users  ORDER BY id ASC");
-                return response;
+                const response = yield database_1.default.query("SELECT * FROM users");
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Create Reviews Successfully!`,
+                    data: response.rows,
+                };
             }
             catch (error) {
                 return error;
@@ -95,7 +105,9 @@ class UserService {
                 if (!checkPassword) {
                     return new APIError("Password was wrong!", STATUS_CODES.BAD_REQUEST);
                 }
-                const token = yield middlwares.createToken({ email });
+                const queryUser = yield database_1.default.query("SELECT * FROM users WHERE email = $1", [email]);
+                const user_id = queryUser.rows[0].user_id;
+                const token = yield middlwares.createToken({ user_id });
                 return {
                     status: STATUS_CODES.OK,
                     success: true,

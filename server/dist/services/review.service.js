@@ -20,8 +20,8 @@ class ReviewService {
     createReviewService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { description, rating } = userInput;
-                const response = yield database_1.default.query("INSERT INTO reviews (description, rating ) VALUES ($1, $2) RETURNING *", [description, rating]);
+                const { description, rating, userName_id, reviewMovie_id } = userInput;
+                const response = yield database_1.default.query("INSERT INTO reviews (description, rating, userName_id, reviewMovie_id ) VALUES ($1, $2, $3, $4) RETURNING *", [description, rating, userName_id, reviewMovie_id]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -64,7 +64,7 @@ class ReviewService {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = ticketInput;
             try {
-                const response = yield database_1.default.query("SELECT * FROM reviews WHERE id = $1 ", [id]);
+                const response = yield database_1.default.query("SELECT * FROM reviews WHERE review_id = $1 ", [id]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -82,18 +82,23 @@ class ReviewService {
             }
         });
     }
-    // async getTicketUserService(userInput: any) {
-    //   const { id } = userInput;
-    //   try {
-    //     const response: QueryResult = await client.query(
-    //       "SELECT * FROM users WHERE id = $1",
-    //       [id]
-    //     );
-    //     return response;
-    //   } catch (error) {
-    //     return error;
-    //   }
-    // }
+    getReviewMovieService(userInput) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = userInput;
+            try {
+                const response = yield database_1.default.query("SELECT * FROM reviews JOIN movies ON reviews.review_id = movies.movies_id WHERE reviews.review_id = $1", [id]);
+                return {
+                    status: STATUS_CODES.OK,
+                    success: true,
+                    message: `Delete Movie Id ${id} successfully!`,
+                    data: response.rows,
+                };
+            }
+            catch (error) {
+                return error;
+            }
+        });
+    }
     deleteReviewUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = userInput;
