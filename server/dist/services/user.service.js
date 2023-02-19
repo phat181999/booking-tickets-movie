@@ -21,11 +21,11 @@ const middlwares = new Middlewares();
 class UserService {
     createUserService(userInput) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, email, password, role } = userInput;
+            const { name, email, password, role, avatar } = userInput;
             try {
                 const salt = bcrypt_1.default.genSaltSync(10);
-                const hashPassword = bcrypt_1.default.hashSync(password, salt);
-                const response = yield database_1.default.query("INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *", [name, email, hashPassword, role]);
+                const hashPassword = yield bcrypt_1.default.hashSync(password, salt);
+                const response = yield database_1.default.query("INSERT INTO users (name, email, password, role, avatar) VALUES ($1, $2, $3, $4, $5) RETURNING *", [name, email, hashPassword, role, avatar]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,
@@ -34,7 +34,12 @@ class UserService {
                 };
             }
             catch (error) {
-                return error;
+                return {
+                    status: STATUS_CODES.BadRequestError,
+                    success: false,
+                    message: `Internal Server Error!`,
+                    error: error,
+                };
             }
         });
     }

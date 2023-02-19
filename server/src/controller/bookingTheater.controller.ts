@@ -15,7 +15,7 @@ export const bookingTheater = async (
     res.status(400).json({ message: "Not empty records" });
   }
   const timetampCreate = new Date();
-  const statusSuccess: string = "BOOKING SUCCESS";
+  const statusSuccess: string = "BOOKING THEATER SUCCESS";
   try {
     const checkTheater: QueryResult = await client.query(
       "SELECT * FROM bookingtheater WHERE theater_id = $1",

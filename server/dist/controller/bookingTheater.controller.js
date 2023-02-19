@@ -22,7 +22,7 @@ const bookingTheater = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).json({ message: "Not empty records" });
     }
     const timetampCreate = new Date();
-    const statusSuccess = "BOOKING SUCCESS";
+    const statusSuccess = "BOOKING THEATER SUCCESS";
     try {
         const checkTheater = yield database_1.default.query("SELECT * FROM bookingtheater WHERE theater_id = $1", [theater_id]);
         if (checkTheater.rowCount > 0) {

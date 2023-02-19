@@ -20,7 +20,7 @@ class MovieService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { title, director, description, type, trailer, avatar, timeCount } = userInput;
-                const response = yield database_1.default.query("INSERT INTO movies (title, director, description, type, trailer, avatar,timeCount) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *", [title, director, description, type, trailer, avatar, timeCount]);
+                const response = yield database_1.default.query("INSERT INTO movies (title, director, description, type, trailer, avatar, timeCount) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *", [title, director, description, type, trailer, [avatar], timeCount]);
                 return {
                     status: STATUS_CODES.OK,
                     success: true,

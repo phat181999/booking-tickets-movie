@@ -10,8 +10,8 @@ class MovieService {
         userInput;
 
       const response: QueryResult = await client.query(
-        "INSERT INTO movies (title, director, description, type, trailer, avatar,timeCount) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *",
-        [title, director, description, type, trailer, avatar, timeCount]
+        "INSERT INTO movies (title, director, description, type, trailer, avatar, timeCount) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [title, director, description, type, trailer, [avatar], timeCount]
       );
       return {
         status: STATUS_CODES.OK,

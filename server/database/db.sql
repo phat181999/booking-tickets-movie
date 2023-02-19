@@ -10,6 +10,7 @@ CREATE TABLE users(
 );
 
 DROP TABLE IF EXISTS users;
+ALTER TABLE users ADD COLUMN avatar VARCHAR(100);
 
 CREATE TABLE movies(
     movies_id SERIAL PRIMARY KEY,
@@ -21,9 +22,10 @@ CREATE TABLE movies(
     avatar VARCHAR(200),
     theater_id INTEGER REFERENCES theaters
 );
-
+ALTER TABLE movies DROP COLUMN avatar;
 ALTER TABLE movies ADD COLUMN showTime timestamp;
 ALTER TABLE movies ADD COLUMN timeCount INTEGER;
+ALTER TABLE movies ADD COLUMN avatar TEXT [];
 DROP TABLE IF EXISTS movies;
 
 CREATE TABLE reviews(
@@ -81,3 +83,4 @@ CREATE TABLE bookingTheater(
 ALTER TABLE bookingTheater ADD COLUMN createAt timestamp;
 ALTER TABLE bookingTheater ADD COLUMN deleteAt timestamp;
 ALTER TABLE bookingTheater ADD COLUMN status VARCHAR(50);
+

@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use("/api/v1", routes_1.default);
+app.use("/uploads", express_1.default.static("uploads"));
 app.listen(3000, () => {
     console.log("listen server port", 3000);
 });
