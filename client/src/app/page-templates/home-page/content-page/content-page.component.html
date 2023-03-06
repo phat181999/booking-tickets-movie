@@ -1,51 +1,39 @@
 <div id="content-page">
-  <!-- [value]="products" -->
-  <p-carousel [numVisible]="3" [numScroll]="3" [circular]="false">
-    <ng-template let-product pTemplate="item">
-      <div class="product-item">
-        <div class="product-item-content">
+  <p-carousel
+    [value]="movies"
+    styleClass="custom-carousel"
+    [numVisible]="1"
+    [numScroll]="1"
+    [circular]="true"
+  >
+    <ng-template let-movie pTemplate="movies">
+      <div class="movie-item">
+        <div class="movie-item-content">
           <div class="p-mb-3"></div>
-          <div>
-            <!-- <h4 class="p-mb-1">{{ product.name }}</h4>
-            <h6 class="p-mt-0 p-mb-3">${{ product.price }}</h6>
-            <span
-              [class]="
-                'product-badge status-' + product.inventoryStatus.toLowerCase()
-              "
-              >{{ product.inventoryStatus }}</span
-            > -->
-            <span class="p-mb-1">
-              <img
-                src="http://occ-0-395-58.1.nflxso.net/dnm/api/v6/tx1O544a9T7n8Z_G12qaboulQQE/AAAABVxz-KdaZMw9cYUwZAxD9pL5US8OrZaAYupJ7_jv1IumWm_76nCJH9bBaRE-F8YK4RvhV9D9aqgV8KV9PoWUevk8iQUrJBj0sgx4RT9y35luXL7OSMNkhypDfhwwwhsJXSzHrh0-SHyNsQQxHOp67VDpR5VNASFvF0ZXSNa-eiCAj0LjgjLD.webp?r=50a"
-              />
-              <img
-                src="http://occ-0-395-58.1.nflxso.net/dnm/api/v6/tx1O544a9T7n8Z_G12qaboulQQE/AAAABVxz-KdaZMw9cYUwZAxD9pL5US8OrZaAYupJ7_jv1IumWm_76nCJH9bBaRE-F8YK4RvhV9D9aqgV8KV9PoWUevk8iQUrJBj0sgx4RT9y35luXL7OSMNkhypDfhwwwhsJXSzHrh0-SHyNsQQxHOp67VDpR5VNASFvF0ZXSNa-eiCAj0LjgjLD.webp?r=50a"
-              />
-              <img
-                src="http://occ-0-395-58.1.nflxso.net/dnm/api/v6/tx1O544a9T7n8Z_G12qaboulQQE/AAAABVxz-KdaZMw9cYUwZAxD9pL5US8OrZaAYupJ7_jv1IumWm_76nCJH9bBaRE-F8YK4RvhV9D9aqgV8KV9PoWUevk8iQUrJBj0sgx4RT9y35luXL7OSMNkhypDfhwwwhsJXSzHrh0-SHyNsQQxHOp67VDpR5VNASFvF0ZXSNa-eiCAj0LjgjLD.webp?r=50a"
-              />
-            </span>
-
-            <div class="car-buttons p-mt-5">
-              <p-button
+          <h4 class="p-mb-1 title-movie">{{ movie.title }}</h4>
+          <div class="image-movie">
+            <img src="{{ movie.avatar }}" />
+          </div>
+          <div class="des-movie">
+            <span> Read More</span>
+            <div class="trailer-movie">
+              <button
                 type="button"
-                styleClass="p-button p-button-rounded p-mr-2"
-                icon="pi pi-search"
-              ></p-button>
-              <p-button
-                type="button"
-                styleClass="p-button-success p-button-rounded p-mr-2"
-                icon="pi pi-star"
-              ></p-button>
-              <p-button
-                type="button"
-                styleClass="p-button-help p-button-rounded"
-                icon="pi pi-cog"
-              ></p-button>
+                icon="pi pi-info-circle"
+                label="Show"
+                (click)="showDialog()"
+              >
+                <i class="pi pi-play"> </i>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </ng-template>
   </p-carousel>
+  <app-popup-component
+    [isOpen]="display"
+    [movies]="movies"
+  ></app-popup-component>
 </div>
+<!-- [autoplayInterval]="3000" -->
