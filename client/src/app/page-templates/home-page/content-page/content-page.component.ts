@@ -72,7 +72,7 @@ export class ContentPageComponent {
 
   getMovie() {
     this.movieService
-      .getMovieService()
+      .getSlideMovieService()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((data) => {
         return (this.movies = data);

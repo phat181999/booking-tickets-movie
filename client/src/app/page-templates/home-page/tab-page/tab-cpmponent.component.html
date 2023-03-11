@@ -1,0 +1,62 @@
+<div id="tab-page">
+  <p-tabView>
+    <p-tabPanel header="Now Showing" [selected]="true">
+      <div class="tab-now">
+        <div class="tab-now-card">
+          <p-carousel [value]="movies">
+            <ng-template let-movie pTemplate="item">
+              <span>{{ movie.title }}</span>
+              <!-- <div class="card-image">
+                <img src="{{ movie.avatar }}" />
+              </div> -->
+              <div class="card-content">
+                <button
+                  type="button"
+                  icon="pi pi-info-circle"
+                  label="Show"
+                  (click)="showDialog()"
+                >
+                  <i class="pi pi-play"> </i>
+                </button>
+                <div class="show-time">
+                  <span>Released: {{ movie.showtime }} </span>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="New In">
+      <div class="tab-now">
+        <div class="tab-now-card">
+          <p-carousel [value]="movies">
+            <ng-template let-movie pTemplate="item">
+              <span>{{ movie.title }}</span>
+              <!-- <div class="card-image">
+              <img src="{{ movie.avatar }}" />
+            </div> -->
+              <div class="card-content">
+                <button
+                  type="button"
+                  icon="pi pi-info-circle"
+                  label="Show"
+                  (click)="showDialog()"
+                >
+                  <i class="pi pi-play"> </i>
+                </button>
+                <div class="show-time">
+                  <span>Released: {{ movie.showtime }} </span>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+  <app-popup-component
+    [isOpen]="display"
+    [movies]="movies"
+  ></app-popup-component>
+</div>

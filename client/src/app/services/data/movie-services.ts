@@ -24,7 +24,7 @@ export class MovieService {
     return throwError(msg);
   }
 
-  getMovieService = (): Observable<Array<Movie>> => {
+  getSlideMovieService = (): Observable<Array<Movie>> => {
     return this.httpClient.get<Movie>(this.host + 'movie/get-movies').pipe(
       map((response: any) => {
         const result = response ? response.data : {};
@@ -32,10 +32,19 @@ export class MovieService {
           .map(function (key) {
             return result[key];
           })
-          .slice(-1);
+          .slice(-3);
         return slice;
       }),
       catchError(this.httpError)
+    );
+  };
+
+  getMovieNow = (): Observable<Array<Movie>> => {
+    return this.httpClient.get<Movie>(this.host + 'movie/get-movies').pipe(
+      map((response: any) => {
+        const result = response ? response.data : {};
+        return result;
+      })
     );
   };
 }

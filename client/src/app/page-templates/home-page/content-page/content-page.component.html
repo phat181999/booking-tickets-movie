@@ -5,6 +5,7 @@
     [numVisible]="1"
     [numScroll]="1"
     [circular]="true"
+    [autoplayInterval]="3000"
   >
     <ng-template let-movie pTemplate="movies">
       <div class="movie-item">
@@ -15,7 +16,7 @@
             <img src="{{ movie.avatar }}" />
           </div>
           <div class="des-movie">
-            <span> Read More</span>
+            <span>Read More</span>
             <div class="trailer-movie">
               <button
                 type="button"
@@ -25,6 +26,9 @@
               >
                 <i class="pi pi-play"> </i>
               </button>
+            </div>
+            <div class="time-show">
+              <span>Released: {{ movie.showtime }} </span>
             </div>
           </div>
         </div>
@@ -36,4 +40,3 @@
     [movies]="movies"
   ></app-popup-component>
 </div>
-<!-- [autoplayInterval]="3000" -->
